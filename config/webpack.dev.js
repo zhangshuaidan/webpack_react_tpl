@@ -17,7 +17,8 @@ const config = merge(baseWebpackConfig,{
       // quiet: true,
         // open:true,//自动打开浏览器
         port:3000,//开启的端口
-        compress: true //是否启用 gzip 压缩
+        compress: true, //是否启用 gzip 压缩
+        historyApiFallback: true,
      }
  }) 
  

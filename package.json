@@ -48,6 +48,7 @@
     "antd": "^4.0.3",
     "core-js": "^3.6.4",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "react-router-dom": "^5.1.2"
   }
 }
