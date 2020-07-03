@@ -3,12 +3,15 @@
  * @desc wbepack打包公用配置
  */
 const path = require('path')
+const HappyPack = require('happypack') 
+const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
-const publicPath = '/'
+const publicPath = './'
 
 
 const config = {
@@ -27,21 +30,21 @@ const config = {
     },
     module: {
         rules: [
-            // {
-            //     test:/.html$/, //处理html中的图片引入问题  该插件会压缩html文档
-            //     use:'html-withimg-loader'
-            // },
+            {
+                test:/.html$/, //处理html中的图片引入问题  该插件会压缩html文档
+                use:'html-withimg-loader'
+            },
             {
                 test: /\.jsx?$/,
-                // use: ['babel-loader'],
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true //配置打包缓存 提升打包速度
-                        }
-                    }
-                ],
+                use: 'happypack/loader?id=babel', // happy 打包
+                // use: [
+                //     {
+                //         loader: 'babel-loader',
+                //         options: {
+                //             cacheDirectory: true //配置打包缓存 提升打包速度
+                //         }
+                //     }
+                // ],
                 exclude: /node_modules/ //排除 node_modules 目录
             },
             {
@@ -81,6 +84,21 @@ const config = {
         ]
     },
     plugins: [
+        new HappyPack({
+            id: 'babel',
+            //共享进程池
+            threadPool: happyThreadPool,
+            //允许 HappyPack 输出日志
+            verbose: true,
+            loaders: [
+                {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true
+                    }
+                }
+            ]
+        }),
         new ProgressBarPlugin({
             format: 'build [:bar] :percent (:elapsed seconds)',
             clear: false, 

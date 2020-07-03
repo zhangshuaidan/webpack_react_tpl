@@ -6,7 +6,7 @@ import './index.less'
 
 function MyAPP(){
     return (
-        <div>hi this is react</div>
+        <div>this is a react framework </div>
     )
 }
 
